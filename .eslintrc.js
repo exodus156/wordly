@@ -1,42 +1,28 @@
 module.exports = {
-	"env": {
-		"browser": true,
-		"es2021": true,
-		"node": true,
+	env: {
+		browser: true,
+		es2021: true,
+		node: true,
 	},
-	"extends": [
+	extends: [
 		"eslint:recommended",
 		"plugin:react/recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended",
 	],
-	"parser": "@typescript-eslint/parser",
-	"parserOptions": {
-		"ecmaFeatures": {
-			"jsx": true
+	parser: "@typescript-eslint/parser",
+	parserOptions: {
+		ecmaFeatures: {
+			jsx: true,
 		},
-		"ecmaVersion": "latest",
-		"sourceType": "module"
+		ecmaVersion: "latest",
+		sourceType: "module",
 	},
-	"plugins": [
-		"react",
-		"@typescript-eslint"
-	],
-	"rules": {
-		"indent": [
-			"error",
-			"tab"
-		],
-		"linebreak-style": [
-			"error",
-			"unix"
-		],
-		"quotes": [
-			"error",
-			"double"
-		],
-		"semi": [
-			"error",
-			"never"
-		]
-	}
+	plugins: ["react", "@typescript-eslint"],
+	rules: {
+		"linebreak-style": ["error", "unix"],
+		quotes: ["error", "double"],
+		semi: ["error", "never"],
+		"react/jsx-first-prop-new-line": ["error", "multiline"],
+	},
 }
