@@ -20,7 +20,7 @@ const Header: React.FC = () => {
 						)}`}
 						key={`${letter} ${idx}`}
 					>
-						<span className="text-white text-5xl">{letter}</span>
+						<span className="text-white text-6xl">{letter}</span>
 					</div>
 				)
 			})}
