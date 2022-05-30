@@ -15,12 +15,12 @@ const Header: React.FC = () => {
 				}
 				return (
 					<div
-						className={`w-[6rem] h-[6rem] flex justify-center items-center rounded-lg ${bgColor(
+						className={`w-[7rem] h-[7rem] flex justify-center items-center rounded-lg ${bgColor(
 							idx
 						)}`}
 						key={`${letter} ${idx}`}
 					>
-						<span className="text-white text-6xl">{letter}</span>
+						<span className="text-white text-7xl">{letter}</span>
 					</div>
 				)
 			})}

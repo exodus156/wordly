@@ -9,6 +9,8 @@ type WordlyInputProps = {
 	currentInputRef: React.MutableRefObject<HTMLInputElement>
 	inputIndex: number
 	isChecked: boolean
+	disabledInput: boolean
+	isRowActive: boolean
 }
 
 const WordlyInput: React.FC<WordlyInputProps> = ({
@@ -20,6 +22,8 @@ const WordlyInput: React.FC<WordlyInputProps> = ({
 	inputIndex,
 	isChecked,
 	checkValues,
+	disabledInput,
+	isRowActive,
 }) => {
 	const inputColorStyles = useMemo((): string => {
 		switch (true) {
@@ -44,18 +48,22 @@ const WordlyInput: React.FC<WordlyInputProps> = ({
 				;(currentInputRef.current.previousSibling as HTMLInputElement).focus()
 				return
 			}
-			e.preventDefault()
-			currentInputRef.current.value = ""
-			return
 		}
-		if (e.key === "Enter" && !currentInputRef.current.nextSibling) {
+		if (
+			e.key === "Enter" &&
+			!currentInputRef.current.nextSibling &&
+			currentInputRef.current.value
+		) {
 			checkValues()
-			if (!currentInputRef.current.parentElement?.nextSibling) return
-			;(
-				currentInputRef.current.parentElement?.nextSibling
-					.firstChild as HTMLInputElement
-			).focus()
 		}
+		if (e.key === "Tab") e.preventDefault()
+	}
+
+	const handleMouseClick = (
+		e: React.MouseEvent<HTMLInputElement, MouseEvent>
+	) => {
+		if (isRowActive) return
+		e.preventDefault()
 	}
 
 	const handleChange = (): void => {
@@ -73,10 +81,13 @@ const WordlyInput: React.FC<WordlyInputProps> = ({
 			ref={currentInputRef}
 			onChange={handleChange}
 			defaultValue={letter}
-			disabled={isChecked}
+			disabled={disabledInput}
 			onKeyDown={handleKeypress}
+			onMouseDown={handleMouseClick}
 			maxLength={1}
-			className={`w-[5rem] h-[5rem] text-center text-5xl border-2 rounded-lg ${inputColorStyles}`}
+			className={`w-[6rem] h-[6rem] text-center text-6xl border-2 rounded-lg ${
+				isRowActive ? "cursor-text" : "cursor-default"
+			} ${inputColorStyles}`}
 		/>
 	)
 }
