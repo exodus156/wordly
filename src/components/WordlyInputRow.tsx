@@ -5,6 +5,11 @@ const DEFAULT_INPUTS_IN_ROW = 5
 
 type WordlyInputRowProps = {
 	guessWord: string
+	winGame: () => void
+	loseGame?: () => void
+	isGameWon: boolean
+	isRowActive: boolean
+	switchActiveRow: () => void
 }
 
 type WordlyLetterType = {
@@ -21,9 +26,18 @@ const initialLettersArray = Array<WordlyLetterType>(DEFAULT_INPUTS_IN_ROW).fill(
 	}
 )
 
-const WordlyInputRow: React.FC<WordlyInputRowProps> = ({ guessWord }) => {
+const WordlyInputRow: React.FC<WordlyInputRowProps> = ({
+	guessWord,
+	winGame,
+	loseGame,
+	isGameWon,
+	isRowActive,
+	switchActiveRow,
+}) => {
 	const [lettersArray, setLettersArray] = useState(initialLettersArray)
 	const [isChecked, setIsChecked] = useState(false)
+
+	const rowRef = useRef<HTMLDivElement>(null)
 
 	const checkLetters = (): void => {
 		const lettersCopy = lettersArray.map(
@@ -36,8 +50,27 @@ const WordlyInputRow: React.FC<WordlyInputRowProps> = ({ guessWord }) => {
 				}
 			}
 		)
+		const invalidLetters = lettersCopy.filter((letter) => !letter.letter)
+		if (invalidLetters.length) return
+		switchActiveRow()
 		setLettersArray(lettersCopy)
 		setIsChecked(true)
+
+		if (rowRef.current?.nextSibling)
+			(rowRef.current.nextSibling.firstChild as HTMLInputElement).focus()
+
+		const filteredLetters = lettersCopy.filter(
+			(letter) => letter.correctPlacement
+		)
+		if (filteredLetters.length === lettersArray.length) {
+			winGame()
+			return
+		}
+
+		if (loseGame) {
+			loseGame()
+			return
+		}
 	}
 
 	const updateLettersArray = (index: number, letter: string): void => {
@@ -50,7 +83,10 @@ const WordlyInputRow: React.FC<WordlyInputRowProps> = ({ guessWord }) => {
 	}
 
 	return (
-		<div className="flex justify-center items-center space-x-4 mt-5">
+		<div
+			ref={rowRef}
+			className="flex justify-center items-center space-x-4 mt-5"
+		>
 			{lettersArray.map(({ letter, correctLetter, correctPlacement }, idx) => {
 				const inputLetterRef =
 					useRef() as React.MutableRefObject<HTMLInputElement>
@@ -62,6 +98,8 @@ const WordlyInputRow: React.FC<WordlyInputRowProps> = ({ guessWord }) => {
 						correctPlacement={correctPlacement}
 						inputIndex={idx}
 						isChecked={isChecked}
+						disabledInput={isChecked || isGameWon}
+						isRowActive={isRowActive}
 						updateLetter={updateLettersArray}
 						letter={letter}
 						checkValues={checkLetters}

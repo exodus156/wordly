@@ -1,5 +1,5 @@
 html, body, #root {
-	@apply h-full p-0 m-0 text-[1vw] bg-gray-200
+	@apply h-full p-0 m-0 text-[1vw] bg-gray-100
 }
 
 @tailwind base;
