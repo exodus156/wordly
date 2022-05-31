@@ -1,4 +1,5 @@
 import React, { useMemo } from "react"
+import { motion } from "framer-motion"
 
 type WordlyInputProps = {
 	correctLetter?: boolean
@@ -13,6 +14,8 @@ type WordlyInputProps = {
 	isRowActive: boolean
 }
 
+const inputRegEx = /^[a-zA-Z]+$/
+
 const WordlyInput: React.FC<WordlyInputProps> = ({
 	correctLetter = false,
 	correctPlacement = false,
@@ -25,18 +28,94 @@ const WordlyInput: React.FC<WordlyInputProps> = ({
 	disabledInput,
 	isRowActive,
 }) => {
-	const inputColorStyles = useMemo((): string => {
+	const inputColorVariant = useMemo((): string => {
 		switch (true) {
 			case isChecked && correctPlacement && correctLetter:
-				return "bg-lime-600 border-lime-600 text-white"
+				return "correctField"
 			case isChecked && correctLetter && !correctPlacement:
-				return "bg-yellow-500 border-yellow-500 text-white"
+				return "correctLetter"
 			case isChecked && !correctLetter && !correctPlacement:
-				return "bg-stone-600 border-stone-600 text-white"
+				return "incorrectField"
 			default:
-				return "border-black bg-transparent text-black"
+				return "defaut"
 		}
 	}, [correctPlacement, correctLetter, isChecked])
+
+	const colorVariants: { [key: string]: any } = {
+		correctField: {
+			backgroundColor: [
+				"#f5f5f4",
+				"#ecfccb",
+				"#d9f99d",
+				"#bef264",
+				"#a3e635",
+				"#84cc16",
+				"#65a30d",
+			],
+			borderColor: ["#000000", "#365314", "#3f6212", "#4d7c0f", "#65a30d"],
+			color: [
+				"#000000",
+				"#1c1917",
+				"#44403c",
+				"#78716c",
+				"#d6d3d1",
+				"#f5f5f4",
+				"#f5f5f4",
+			],
+		},
+		correctLetter: {
+			backgroundColor: [
+				"#f5f5f4",
+				"#fef9c3",
+				"#fef08a",
+				"#fde047",
+				"#facc15",
+				"#eab308",
+			],
+			borderColor: [
+				"#000000",
+				"#713f12",
+				"#854d0e",
+				"#a16207",
+				"#ca8a04",
+				"#eab308",
+			],
+			color: [
+				"#000000",
+				"#1c1917",
+				"#44403c",
+				"#78716c",
+				"#d6d3d1",
+				"#f5f5f4",
+				"#f5f5f4",
+			],
+		},
+		incorrectField: {
+			backgroundColor: [
+				"#f5f5f4",
+				"#e7e5e4",
+				"#d6d3d1",
+				"#a8a29e",
+				"#78716c",
+				"#57534e",
+			],
+			borderColor: ["#000000", "#1c1917", "#292524", "#44403c", "#57534e"],
+			color: [
+				"#000000",
+				"#1c1917",
+				"#44403c",
+				"#78716c",
+				"#d6d3d1",
+				"#f5f5f4",
+				"#f5f5f4",
+			],
+		},
+		default: {
+			backgroundColor: "#f5f5f4",
+			borderColor: "#000000",
+			color: "#000000",
+		},
+	}
 
 	const handleKeypress = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Backspace") {
@@ -68,6 +147,10 @@ const WordlyInput: React.FC<WordlyInputProps> = ({
 
 	const handleChange = (): void => {
 		if (!currentInputRef.current.value.length) return
+		if (!inputRegEx.test(currentInputRef.current.value)) {
+			currentInputRef.current.value = ""
+			return
+		}
 		currentInputRef.current.value = currentInputRef.current.value.toUpperCase()
 		updateLetter(inputIndex, currentInputRef.current.value)
 
@@ -76,18 +159,26 @@ const WordlyInput: React.FC<WordlyInputProps> = ({
 		;(currentInputRef.current.nextSibling as HTMLInputElement).focus()
 	}
 	return (
-		<input
+		<motion.input
 			type="text"
 			ref={currentInputRef}
+			initial="default"
+			animate={colorVariants[inputColorVariant]}
+			transition={{
+				duration: 0.1,
+				ease: "linear",
+				delay: inputIndex * 0.1,
+			}}
+			variants={colorVariants}
 			onChange={handleChange}
 			defaultValue={letter}
 			disabled={disabledInput}
 			onKeyDown={handleKeypress}
 			onMouseDown={handleMouseClick}
 			maxLength={1}
-			className={`w-[6rem] h-[6rem] text-center text-6xl border-2 rounded-lg ${
+			className={`w-[4rem] h-[4rem] text-center text-4xl border-2 rounded-lg  ${
 				isRowActive ? "cursor-text" : "cursor-default"
-			} ${inputColorStyles}`}
+			}`}
 		/>
 	)
 }

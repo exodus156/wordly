@@ -6,6 +6,7 @@ type VictoryScreen = {
 	onClickRestart: () => void
 	onClickClose: () => void
 	guessWord: string
+	timeout: number
 }
 
 const VictoryScreen: React.FC<VictoryScreen> = ({
@@ -13,6 +14,7 @@ const VictoryScreen: React.FC<VictoryScreen> = ({
 	onClickClose,
 	onClickRestart,
 	guessWord,
+	timeout,
 }) => {
 	const handleRestart = (): void => {
 		onClickRestart()
@@ -20,7 +22,7 @@ const VictoryScreen: React.FC<VictoryScreen> = ({
 	}
 
 	return (
-		<WordlyDialog isOpen={isOpen} onClose={onClickClose}>
+		<WordlyDialog isOpen={isOpen} onClose={onClickClose} timeout={timeout}>
 			<div className="flex flex-col justify-center items-center m-4">
 				<span className="mb-5 text-4xl font-semibold">Congratulations!</span>
 				<span className="text-lg mb-3">

@@ -5,10 +5,10 @@ import LoseScreen from "./components/LoseScreen"
 import TutorialDialog from "./components/TutorialDialog"
 import VictoryScreen from "./components/VictoryScreen"
 import WordlyInputRow from "./components/WordlyInputRow"
+import words from "./db/wordle.json"
 
-const testValue = "banna"
-
-const NUMBER_OF_ATTEMPS = 6
+const NUMBER_OF_ATTEMPS = 8
+const DELAY_FOR_ENDING = 700
 
 const App: React.FC = () => {
 	const [gameState, setGameState] = useState({
@@ -19,6 +19,7 @@ const App: React.FC = () => {
 	const [isVictoryScreenOpen, setIsVictoryScreenOpen] = useState(false)
 	const [isLostScreenOpen, setIsLostScreenOpen] = useState(false)
 	const [activeRowIndex, setActiveRowIndex] = useState(0)
+	const [gameWord] = useState(words[Math.floor(Math.random() * words.length)])
 
 	const winGame = (): void => {
 		setGameState({
@@ -71,7 +72,7 @@ const App: React.FC = () => {
 					{Array.from({ length: NUMBER_OF_ATTEMPS }, (item, idx) => (
 						<WordlyInputRow
 							key={idx}
-							guessWord={testValue}
+							guessWord={gameWord}
 							winGame={winGame}
 							isGameWon={gameState.gameWon}
 							loseGame={
@@ -94,7 +95,8 @@ const App: React.FC = () => {
 					isOpen={isVictoryScreenOpen}
 					onClickClose={closeVictoryScreen}
 					onClickRestart={restartGame}
-					guessWord={testValue}
+					guessWord={gameWord}
+					timeout={DELAY_FOR_ENDING}
 				/>
 			)}
 			{isLostScreenOpen && (
@@ -102,7 +104,8 @@ const App: React.FC = () => {
 					isOpen={isLostScreenOpen}
 					onClickClose={closeLostScreen}
 					onClickRestart={restartGame}
-					guessWord={testValue}
+					guessWord={gameWord}
+					timeout={DELAY_FOR_ENDING}
 				/>
 			)}
 			{isTutorialOpen && (
