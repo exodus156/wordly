@@ -37,7 +37,7 @@ const TutorialDialog: React.FC<TutorialDialog> = ({ isOpen, onClickClose }) => {
 					</span>
 					<span>
 						<span className="text-stone-600 font-bold">Gray</span> means that
-						the letter doesn't occur in the world.
+						the letter doesn't occur in the word.
 					</span>
 				</p>
 				<button
