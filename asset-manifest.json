@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/exodus156/wordly/static/css/main.ffc9c381.css",
-    "main.js": "/exodus156/wordly/static/js/main.81985b49.js",
-    "index.html": "/exodus156/wordly/index.html",
-    "main.ffc9c381.css.map": "/exodus156/wordly/static/css/main.ffc9c381.css.map",
-    "main.81985b49.js.map": "/exodus156/wordly/static/js/main.81985b49.js.map"
+    "main.css": "/wordly/static/css/main.ffc9c381.css",
+    "main.js": "/wordly/static/js/main.81985b49.js",
+    "index.html": "/wordly/index.html",
+    "main.ffc9c381.css.map": "/wordly/static/css/main.ffc9c381.css.map",
+    "main.81985b49.js.map": "/wordly/static/js/main.81985b49.js.map"
   },
   "entrypoints": [
     "static/css/main.ffc9c381.css",
