@@ -7,7 +7,7 @@ import VictoryScreen from "./components/VictoryScreen"
 import WordlyInputRow from "./components/WordlyInputRow"
 import words from "./db/wordle.json"
 
-const NUMBER_OF_ATTEMPS = 8
+const NUMBER_OF_ATTEMPS = 6
 const DELAY_FOR_ENDING = 700
 
 const App: React.FC = () => {
